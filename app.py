@@ -19,14 +19,14 @@ def task_completed():
     hive.notify_completion(task)
     return jsonify({"status": "success", "message": "Task processed successfully"})
 
-@app.route('/task_completed', methods=['GET'])
+@app.route('/request_task', methods=['GET'])
 def request_task():
-    task_data = request.json
-    return jsonify({"status": "success", "message": "Task processed successfully"})
+    task_data = 'task'
+    return task_data
 
 @app.route('/status')
 def status():
-    data = hive_mind.get_system_status()
+    data = hive.get_system_status()
     return jsonify(data)
 
 if __name__ == '__main__':
