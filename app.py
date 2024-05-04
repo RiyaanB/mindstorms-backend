@@ -29,4 +29,5 @@ def status():
     return jsonify(data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    print(hive.get_unassigned_task())
