@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 from engine.hive import Hive
-from engine.task import Task
 
 app = Flask(__name__)
 hive = Hive("We are building the next Google")
@@ -13,16 +12,16 @@ def register():
 
 @app.route('/task_completed', methods=['POST'])
 def task_completed():
-    task_data = request.json
-    task = Task.get_task_by_id(task_data.id)
-    task.set_result(task_data.result)
-    hive.notify_completion(task)
+    task = request.json
+    hive.update_gc_with_task_result(task)
     return jsonify({"status": "success", "message": "Task processed successfully"})
 
 @app.route('/request_task', methods=['GET'])
 def request_task():
-    task_data = 'task'
-    return task_data
+    task = hive.get_unassigned_task()
+    if task is None:
+        return jsonify({})
+    return jsonify(task)
 
 @app.route('/status')
 def status():
