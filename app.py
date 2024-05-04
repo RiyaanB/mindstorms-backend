@@ -3,12 +3,12 @@ from engine.hive import Hive
 from engine.task import Task
 
 app = Flask(__name__)
-hive = Hive()
+hive = Hive("We are building the next Google")
 
 @app.route('/register', methods=['POST'])
 def register():
     user_data = request.json
-    hive_mind.register_user(user_data)
+    hive.register_user(user_data)
     return jsonify({"status": "success", "message": "User registered successfully"})
 
 @app.route('/task_completed', methods=['POST'])

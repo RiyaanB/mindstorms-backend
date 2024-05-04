@@ -4,10 +4,10 @@ from openai import OpenAI
 client = OpenAI(api_key='sk-proj-OUOET3Yuu7uvB59kqDR5T3BlbkFJThoqZuiS29RO9EEvx7ep')
 
 class Hive:
-    def __init__(self):
+    def __init__(self, objective):
         self.users = {}
         self.tasks = {}
-        self.global_context = ""
+        self.global_context = f"GLOBAL CONTEXT:\n {objective}"
 
     def interact_with_gpt4(self, prompt):
 
@@ -49,7 +49,4 @@ class Hive:
     
     def update_gc_with_task_result(self, task):
         prompt = self.global_context
-    
-
-tasks = [{'description': 'testing'}]
-print(Hive().generate_new_tasks_from_context(tasks))
+        prompt += f"\n We just finished this task: '{task['description']}' and the result was '{task['result']}'\n Rewrite the above global context with the task response"
