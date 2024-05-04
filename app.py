@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 from engine.hive import Hive
-from engine.task import Task
 
 app = Flask(__name__)
 hive = Hive("We are building the next Google")
@@ -30,4 +29,5 @@ def status():
     return jsonify(data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    print(hive.get_unassigned_task())

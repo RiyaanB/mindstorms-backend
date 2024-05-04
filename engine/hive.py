@@ -2,7 +2,7 @@ from openai import OpenAI
 import uuid
 
 # openai.api_key = 'sk-proj-OUOET3Yuu7uvB59kqDR5T3BlbkFJThoqZuiS29RO9EEvx7ep'
-client = OpenAI(api_key='sk-proj-OUOET3Yuu7uvB59kqDR5T3BlbkFJThoqZuiS29RO9EEvx7ep')
+client = OpenAI(api_key='sk-proj-cpvJI2vV0yZF92K9GvjvT3BlbkFJ5WMd5JfXN3u0rYYqzMVk')
 
 class Hive:
     def __init__(self, objective):
@@ -46,8 +46,8 @@ class Hive:
     def generate_new_tasks_from_context(self, pending_tasks):
         prompt = self.global_context
         prompt += "\nPending tasks:\n"
-        print(pending_tasks)
         if len(pending_tasks) > 5:
+            print("Too many pending tasks")
             return
         for task in pending_tasks:
             prompt += f"\n{task['description']}"
@@ -55,10 +55,13 @@ class Hive:
         response =  self.interact_with_gpt4(prompt)
         task_descriptions = str(response).split('\n')
         for description in task_descriptions:
-            self.tasks[uuid.uuid4()].append({
+            task_id = uuid.uuid4()
+            self.tasks[task_id] = {
+                'uuid': task_id,
                 'description': description,
-                'status': 'unsassigned',
-            })
+                'status': 'unassigned',
+            }
+        print(self.tasks)
 
     def update_gc_with_task_result(self, task):
         prompt = self.global_context
