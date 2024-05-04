@@ -13,20 +13,20 @@ def register():
 
 @app.route('/task_completed', methods=['POST'])
 def task_completed():
-    task_data = request.json
-    task = Task.get_task_by_id(task_data.id)
-    task.set_result(task_data.result)
-    hive.notify_completion(task)
+    task = request.json
+    hive.update_gc_with_task_result(task)
     return jsonify({"status": "success", "message": "Task processed successfully"})
 
 @app.route('/task_completed', methods=['GET'])
 def request_task():
-    task_data = request.json
-    return jsonify({"status": "success", "message": "Task processed successfully"})
+    task = hive.get_unassigned_task()
+    if task is None:
+        return jsonify({})
+    return jsonify(task)
 
 @app.route('/status')
 def status():
-    data = hive_mind.get_system_status()
+    data = hive.get_system_status()
     return jsonify(data)
 
 if __name__ == '__main__':
